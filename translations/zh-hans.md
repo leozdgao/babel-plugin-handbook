@@ -626,7 +626,7 @@ global state from your visitors.
 
 Next let's introduce the concept of a
 [**scope**](https://en.wikipedia.org/wiki/Scope_(computer_science)). JavaScript
-has [lexical scoping](https://en.wikipedia.org/wiki/Scope_(computer_science)#Lexical_scoping_vs._dynamic_scoping),
+has [lexical scoping](https://en.wikipedia.org/wiki/Scope_(computer_science)#Lexical_scoping_vs.\_dynamic_scoping),
 which is a tree structure where blocks create new scope.
 
 ```js
@@ -767,25 +767,21 @@ function scopeOne() {
 
 # API
 
-Babel is actually a collection of modules. In this section we'll walk through
-the major ones, explaining what they do and how to use them.
+Babel 拥有众多模块，在这个部分我们会过一遍其中的几个主要模块，并解释一下它们的作用以及如何使用它们。
 
-> Note: This is not a replacement for detailed API documentation which will be
-available elsewhere shortly.
+> 注意：这并不是一份具体的API文档，具体的API文档之后会马上发布。
 
 ## [`babylon`](https://github.com/babel/babel/tree/master/packages/babylon)
 
-Babylon is Babel's parser. Started as a fork of Acorn, it's fast, simple to use,
-has plugin-based architecture for non-standard features (as well as future
-standards).
+Babylon 是 Babel 的解析器。刚开始的时候它是从 Acorn 那里 fork 而来的，它高效且易用，提供基于插件的架构，从而可以解析非标准的功能（同时也是未来的标准）。
 
-First, let's install it.
+首先，让我们先安装它。
 
 ```sh
 $ npm install --save babylon
 ```
 
-Let's start by simply parsing a string of code:
+我们从解析一段简单的代码开始：
 
 ```js
 import * as babylon from "babylon";
@@ -806,7 +802,7 @@ babylon.parse(code);
 // }
 ```
 
-We can also pass options to `parse()` like so:
+我们也可以给 `parse()` 传入一些选项，比如：
 
 ```js
 babylon.parse(code, {
@@ -815,32 +811,29 @@ babylon.parse(code, {
 });
 ```
 
-`sourceType` can either be `"module"` or `"script"` which is the mode that
-Babylon should parse in. `"module"` will parse in strict mode and allow module
-declarations, `"script"` will not.
+`sourceType` 的值可以是 `"module"` 或是 `"script"`，它代表Babylon的解析模式。`"module"` 将在
+严格模式（strict mode）下解析并允许模块声明，`"script"` 则不行。
 
-> **Note:** `sourceType` defaults to `"script"` and will error when it finds
-> `import` or `export`. Pass `sourceType: "module"` to get rid of these errors.
+> 注意： `sourceType` 默认值为 `"script"`，如果代码中包含 `import` 或者是 `export` 的时候会报
+错。设置 `sourceType: "module"` 就不会有这个错误了。
 
-Since Babylon is built with a plugin-based architecture, there is also a
-`plugins` option which will enable the internal plugins. Note that Babylon has
-not yet opened this API to external plugins, although may do so in the future.
+既然 Babylon 使用了基于插件的架构模式，那么就有 `plugins` 选项来设置启用的内部插件。注意，Babylon
+还没有暴露它的API给外部插件，不过未来可能会有的。
 
-To see a full list of plugins, see the
-[Babylon README](https://github.com/babel/babel/blob/master/packages/babylon/README.md#plugins).
+想查看完整的插件列表，可以看 Babylon 的
+[README文件](https://github.com/babel/babel/blob/master/packages/babylon/README.md#plugins)。
 
 ## [`babel-traverse`](https://github.com/babel/babel/tree/master/packages/babel-traverse)
 
-The Babel Traverse module maintains the overall tree state, and is responsible
-for replacing, removing, and adding nodes.
+Babel Traverse 模块维护了整颗 AST 的状态，并负责替换、删除和添加节点（ Node ）。
 
-Install it by running:
+通过运行下面的命令来安装它：
 
 ```sh
 $ npm install --save babel-traverse
 ```
 
-We can use it alongside Babylon to traverse and update nodes:
+我们让它和 Babylon 配合使用，来遍历和更新节点（ nodes ）：
 
 ```js
 import * as babylon from "babylon";
@@ -866,17 +859,16 @@ traverse(ast, {
 
 ## [`babel-types`](https://github.com/babel/babel/tree/master/packages/babel-types)
 
-Babel Types is a Lodash-esque utility library for AST nodes. It contains
-methods for building, validating, and converting AST nodes. It's useful for
-cleaning up AST logic with well thought out utility methods.
+Babel Types 是一个等同于 Lodash 的工具类，主要针对 AST 节点。它包括构建、验证和转化 AST 节点。
+使用这些工具方法对于理清 AST 的操作逻辑是很有帮助的。
 
-You can install it by running:
+通过运行下面的命令来安装它：
 
 ```sh
 $ npm install --save babel-types
 ```
 
-Then start using it:
+接下来我们开始使用它：
 
 ```js
 import traverse from "babel-traverse";
@@ -893,11 +885,10 @@ traverse(ast, {
 
 ### Definitions（定义）
 
-Babel Types has definitions for every single type of node, with information on
-what properties belong where, what values are valid, how to build that node, how
-the node should be traversed, and aliases of the Node.
+Babel Types 对每一种类型的节点都有一个定义，每个定义都有各自的属性来表示节点信息，比如什么值是合理的、
+如何来构建这个节点、节点应该怎么被遍历以及节点的别名。
 
-A single node type definition looks like this:
+例如下面这个单个节点的类型定义：
 
 ```js
 defineType("BinaryExpression", {
@@ -920,21 +911,19 @@ defineType("BinaryExpression", {
 
 ### Builders（构造器）
 
-You'll notice the above definition for `BinaryExpression` has a field for a
-`builder`.
+你会发现在上例的定义中 `BinaryExpression` 类型有一个字段 `builder`。
 
 ```js
 builder: ["operator", "left", "right"]
 ```
 
-This is because each node type gets a builder method, which when used looks like
-this:
+这是因为每一个节点类型都一个构造器方法（ builder method ），在使用的时候就像这样：
 
 ```js
 t.binaryExpression("*", t.identifier("a"), t.identifier("b"));
 ```
 
-Which creates an AST like this:
+它创建的 AST 如下：
 
 ```js
 {
@@ -951,19 +940,18 @@ Which creates an AST like this:
 }
 ```
 
-Which when printed looks like this:
+实际输出的代码就是这样：
 
 ```js
 a * b
 ```
 
-Builders will also validate the nodes they are creating and throw descriptive
-errors if used improperly. Which leads into the next type of method.
+构造器（ Builders ）会验证它们将要创建的节点，如果对构造器的使用不当，那么会有一个带有详细描述
+的错误被抛出。这引出了下面的另一类方法。
 
 ### Validators（验证器）
 
-The definition for `BinaryExpression` also includes information on the `fields`
-of a node and how to validate them.
+`BinaryExpression` 的定义中包括属性 `fields`，它表示这个定义中的节点信息以及如何验证这些节点。
 
 ```js
 fields: {
@@ -979,23 +967,19 @@ fields: {
 }
 ```
 
-This is used to create two types of validating methods. The first of which is
-`isX`.
+有两种用来验证的方法。第一种是 `isX` 形式：
 
 ```js
 t.isBinaryExpression(maybeBinaryExpressionNode);
 ```
 
-This tests to make sure that the node is a binary expression, but you can also
-pass a second parameter to ensure that the node contains certain properties and
-values.
+这个测试是用来确保节点是一个二元表达式，你也可以传递第二个参数，来确保节点需要包含的属性和值：
 
 ```js
 t.isBinaryExpression(maybeBinaryExpressionNode, { operator: "*" });
 ```
 
-There is also the more, _ehem_, assertive version of these methods, which will
-throw errors instead of returning `true` or `false`.
+这些方法还有一种更加断言式的版本，如果不满足断言，则会抛出错误，而不是返回 `true` 或者 `false`。
 
 ```js
 t.assertBinaryExpression(maybeBinaryExpressionNode);
@@ -1009,16 +993,15 @@ t.assertBinaryExpression(maybeBinaryExpressionNode, { operator: "*" });
 
 ## [`babel-generator`](https://github.com/babel/babel/tree/master/packages/babel-generator)
 
-Babel Generator is the code generator for Babel. It takes an AST and turns it
-into code with sourcemaps.
+Babel Generator 是 Babel 的代码生成器，它接受一个 AST，并将它转换成代码，并生成 sourcemaps。
 
-Run the following to install it:
+通过运行下面的命令来安装它：
 
 ```sh
 $ npm install --save babel-generator
 ```
 
-Then use it
+然后来使用它：
 
 ```js
 import * as babylon from "babylon";
@@ -1037,7 +1020,7 @@ generate(ast, null, code);
 // }
 ```
 
-You can also pass options to `generate()`.
+你也可以传递一些选项给 `generate()`。
 
 ```js
 generate(ast, {
@@ -1051,9 +1034,8 @@ generate(ast, {
 
 ## [`babel-template`](https://github.com/babel/babel/tree/master/packages/babel-template)
 
-Babel Template is another tiny but incredibly useful module. It allows you to
-write strings of code with placeholders that you can use instead of manually
-building up a massive AST.
+Babel Template 是另一个虽然小但格外有用的模块。它允许你通过占位符（ placeholders ）
+的方式生成一段代码，而不需要构建一棵繁琐的 AST。
 
 ```sh
 $ npm install --save babel-template

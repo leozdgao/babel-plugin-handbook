@@ -1064,10 +1064,9 @@ var myModule = require("my-module");
 
 # 编写你的第一个 Babel 插件
 
-Now that you're familiar with all the basics of Babel, let's tie it together
-with the plugin API.
+现在你已经数序了 Babel 的全部基础知识了，让我们把它们和插件API结合起来。
 
-Start off with a `function` that gets passed the current `babel` object.
+先从一个 `function` 开始，它接受当前的 `babel` 对象。
 
 ```js
 export default function(babel) {
@@ -1075,8 +1074,7 @@ export default function(babel) {
 }
 ```
 
-Since you'll be using it so often, you'll likely want to grab just `babel.types`
-like so:
+由于我们会经常使用 `babel.types`，我们就像这样直接把它扒出来：
 
 ```js
 export default function({ types: t }) {
@@ -1084,8 +1082,7 @@ export default function({ types: t }) {
 }
 ```
 
-Then you return an object with a property `visitor` which is the primary visitor
-for the plugin.
+然后你就可以返回一个对象，它带有 `visitor` 属性，是这个插件的主要访问者（ visitor ）。
 
 ```js
 export default function({ types: t }) {
@@ -1097,13 +1094,13 @@ export default function({ types: t }) {
 };
 ```
 
-Let's write a quick plugin to show off how it works. Here's our source code:
+让我们赶紧写个简单的插件，来看看它是怎么工作的。这是我们的源代码：
 
 ```js
 foo === bar;
 ```
 
-Or in AST form:
+或者它的 AST 形式：
 
 ```js
 {
@@ -1120,7 +1117,7 @@ Or in AST form:
 }
 ```
 
-We'll start off by adding a `BinaryExpression` visitor method.
+我们从添加一个 `BinaryExpression` 的访问者（ visitor ）方法开始。
 
 ```js
 export default function({ types: t }) {
@@ -1134,8 +1131,7 @@ export default function({ types: t }) {
 }
 ```
 
-Then let's narrow it down to just `BinaryExpression`s that are using the `===`
-operator.
+接下来我们缩小范围，只处理使用了 `===` 操作符的 `BinaryExpression`。
 
 ```js
 visitor: {
@@ -1149,7 +1145,7 @@ visitor: {
 }
 ```
 
-Now let's replace the `left` property with a new identifier:
+接下来我们用一个新的标识符来替换 `left` 属性：
 
 ```js
 BinaryExpression(path) {
@@ -1162,13 +1158,13 @@ BinaryExpression(path) {
 }
 ```
 
-Already if we run this plugin we would get:
+现在如果我们运行了这个插件，我们会得到：
 
 ```js
 sebmck === bar;
 ```
 
-Now let's just replace the `right` property.
+现在我们再来替换 `right` 属性：
 
 ```js
 BinaryExpression(path) {
@@ -1181,13 +1177,13 @@ BinaryExpression(path) {
 }
 ```
 
-And now for our final result:
+现在我们的最终结果：
 
 ```js
 sebmck === dork;
 ```
 
-Awesome! Our very first Babel plugin.
+太棒了！这是我们写的第一个 Babel 插件。
 
 ----
 

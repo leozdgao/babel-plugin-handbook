@@ -218,11 +218,11 @@ interface Node {
 }
 ```
 
-字符串形式的 `type` 字段表示节点的类型（如：`"FunctionDeclaration"`, `"Identifier"`, 或 `"BinaryExpression"`）。每一种类型的节点定义了一些附加属性用来进一步描述该节点类型。
+字符串形式的 `type` 字段表示节点的类型（如：`"FunctionDeclaration"`，`"Identifier"`，或 `"BinaryExpression"`）。每一种类型的节点定义了一些附加属性用来进一步描述该节点类型。
 
 Babel 还为每个节点额外生成了一些属性，用于描述该节点在原始代码中的位置。
 
-```js
+```javascript
 {
   type: ...,
   start: 0,
@@ -241,31 +241,27 @@ Babel 还为每个节点额外生成了一些属性，用于描述该节点在�
 }
 ```
 
-每一个节点都会有 `start`, `end`, `loc` 这几个属性。
+每一个节点都会有 `start`，`end`，`loc` 这几个属性。
 
 ## Babel 的处理步骤
 
-The three primary stages of Babel are **parse**, **transform**, **generate**.
+Babel 的三个主要处理步骤分别是： **解析（parse）**，**转换（transform）**，**生成（generate）**。
 
 ### 解析
 
-The **parse** stage, takes code and outputs an AST. There are two phases of
-parsing in Babel:
-[**Lexical Analysis**](https://en.wikipedia.org/wiki/Lexical_analysis) and
-[**Syntactic Analysis**](https://en.wikipedia.org/wiki/Parsing).
+**解析**步骤接收代码并输出 AST。这个步骤分为两个阶段：[**词法分析（Lexical Analysis）**](https://en.wikipedia.org/wiki/Lexical_analysis) 和 [**语法分析（Syntactic Analysis）**](https://en.wikipedia.org/wiki/Parsing)。
 
 #### 词法分析
 
-Lexical Analysis will take a string of code and turn it into a stream of
-**tokens**.
+词法分析阶段把字符串形式的代码转换为 **令牌（tokens）** 流。
 
-You can think of tokens as a flat array of language syntax pieces.
+你可以把令牌看作是一个扁平的语法片段数组：
 
-```js
+```javascript
 n * n;
 ```
 
-```js
+```javascript
 [
   { type: { ... }, value: "n", start: 0, end: 1, loc: { ... } },
   { type: { ... }, value: "*", start: 2, end: 3, loc: { ... } },
@@ -274,9 +270,9 @@ n * n;
 ]
 ```
 
-Each of the `type`s here have a set of properties describing the token:
+每一个 `type` 有一组属性来描述该令牌：
 
-```js
+```javascript
 {
   type: {
     label: 'name',
@@ -295,31 +291,21 @@ Each of the `type`s here have a set of properties describing the token:
 }
 ```
 
-Like AST nodes they also have a `start`, `end`, and `loc`.
+和 AST 节点一样它们也有 `start`，`end`，`loc` 属性。
 
 #### 语法分析
 
-Syntactic Analysis will take a stream of tokens and turn it into an AST
-representation. Using the information in the tokens, this phase will reformat
-them as an AST which represents the structure of the code in a way that makes it
-easier to work with.
+语法分析阶段会把一个令牌流转换成 AST 的形式。这个阶段会使用令牌中的信息把它们转换成一个 AST 的表述结构，这样更易于后续的操作。
 
-### 分析
+### 转换
 
-The [transform](https://en.wikipedia.org/wiki/Program_transformation) stage
-takes an AST and traverses through it, adding, updating, and removing nodes as it
-goes along. This is by far the most complex part of Babel or any compiler. This
-is where plugins operate and so it will be the subject of most of this handbook.
-So we won't dive too deep right now.
+[转换](https://en.wikipedia.org/wiki/Program_transformation)步骤接收 AST 并对其进行遍历，在此过程中对节点进行添加、更新及移除等操作。这是 Babel 或是其他编译器中最复杂的过程同时也是插件将要介入工作的部分，这将是本手册的主要内容，因此让我们慢慢来。
 
 ### 生成
 
-The [code generation](https://en.wikipedia.org/wiki/Code_generation_(compiler))
-stage takes the final AST and turns in back into a string of code, also creating
-[source maps](http://www.html5rocks.com/en/tutorials/developertools/sourcemaps/).
+[代码生成](https://en.wikipedia.org/wiki/Code_generation_(compiler))步骤把最终（经过一系列转换之后）的 AST转换成字符串形式的代码，同时创建[源码映射（source maps）](http://www.html5rocks.com/en/tutorials/developertools/sourcemaps/)。
 
-Code generation is pretty simple: you traverse through the AST depth-first,
-building a string that represents the transformed code.
+代码生成其实很简单：深度优先遍历整个 AST，然后构建可以表示转换后代码的字符串。
 
 ## 遍历
 

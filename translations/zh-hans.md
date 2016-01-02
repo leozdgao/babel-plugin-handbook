@@ -95,18 +95,12 @@ $ npm install -g babel-plugin-handbook
 
 # 介绍
 
-Babel is a generic multi-purpose compiler for JavaScript. More than that it is a
-collection of modules that can be used for many different forms of static
-analysis.
+Babel 是一个通用的多功能的 JavaScript 编译器。此外它还拥有众多模块可用于不同形式的静态分析。
 
-> Static analysis is the process of analyzing code without executing it.
-> (Analysis of code while executing it is known as dynamic analysis). The
-> purpose of static analysis varies greatly. It can be used for linting,
-> compiling, code highlighting, code transformation, optimization, minification,
-> and much more.
+> 静态分析是在不需要执行代码的前提下对代码进行分析的处理过程（执行代码的同时进行代码分析即是动态分析）。
+> 静态分析的目的是多种多样的，它可用于语法检查，编译，代码高亮，代码转换，优化，压缩等等场景。
 
-You can use Babel to build many different types of tools that can help you be
-more productive and write better programs.
+你可以使用 Babel 创建多种类型的工具来帮助你更有效率并且写出更好的程序。
 
 # 基础
 

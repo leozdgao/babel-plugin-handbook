@@ -104,17 +104,13 @@ Babel 是一个通用的多功能的 JavaScript 编译器。此外它还拥有�
 
 # 基础
 
-Babel is a JavaScript compiler, specifically a source-to-source compiler,
-often called a "transpiler". This means that you give Babel some JavaScript
-code, Babel modifies the code, and generates the new code back out.
+Babel 是 JavaScript 编译器，更确切地说是源码到源码的编译器，通常也叫做“转换编译器（transpiler）”。意思是说你为 Babel 提供一些 JavaScript 代码，Babel 更改这些代码，然后返回给你新生成的代码。
 
 ## 抽象语法树（ASTs）
 
-Each of these steps involve creating or working with an
-[Abstract Syntax Tree](https://en.wikipedia.org/wiki/Abstract_syntax_tree) or
-AST.
+这个处理过程中的每一步都涉及到创建或是操作[抽象语法树](https://en.wikipedia.org/wiki/Abstract_syntax_tree)，亦称 AST。
 
-> Babel uses an AST modified from [ESTree](https://github.com/estree/estree), with the core spec located [here](https://github.com/babel/babel/blob/master/doc/ast/spec.md).
+> Babel 使用一个基于 [ESTree](https://github.com/estree/estree) 并修改过的 AST，它的内核说明文档可以在[这里](https://github.com/babel/babel/blob/master/doc/ast/spec.md)找到。
 
 ```js
 function square(n) {
@@ -122,9 +118,9 @@ function square(n) {
 }
 ```
 
-> Check out [AST Explorer](http://astexplorer.net/) to get a better sense of the AST nodes. [Here](http://astexplorer.net/#/Z1exs6BWMq) is a link to it with the example code above pasted in.
+> [AST Explorer](http://astexplorer.net/) 可以让你对 AST 节点有一个更好的感性认识。[这里](http://astexplorer.net/#/Z1exs6BWMq)是上述代码的一个示例链接。
 
-This same program can be represented as a list like this:
+同样的程序可以表述为下面的列表：
 
 ```md
 - FunctionDeclaration:
@@ -149,9 +145,9 @@ This same program can be represented as a list like this:
                   - name: n
 ```
 
-Or as a JavaScript Object like this:
+或是如下所示的 JavaScript Object（对象）：
 
-```js
+```javascript
 {
   type: "FunctionDeclaration",
   id: {
@@ -183,9 +179,9 @@ Or as a JavaScript Object like this:
 }
 ```
 
-You'll notice that each level of the AST has a similar structure:
+你会留意到 AST 的每一层都拥有相同的结构：
 
-```js
+```javascript
 {
   type: "FunctionDeclaration",
   id: {...},
@@ -194,14 +190,14 @@ You'll notice that each level of the AST has a similar structure:
 }
 ```
 
-```js
+```javascript
 {
   type: "Identifier",
   name: ...
 }
 ```
 
-```js
+```javascript
 {
   type: "BinaryExpression",
   operator: ...,
@@ -210,13 +206,11 @@ You'll notice that each level of the AST has a similar structure:
 }
 ```
 
-> Note: Some properties have been removed for simplicity.
+> 注意：出于简化的目的移除了某些属性
 
-Each of these are known as a **Node**. An AST can be made up of a single Node,
-or hundreds if not thousands of Nodes. Together they are able to describe the
-syntax of a program that can be used for static analysis.
+这样的每一层结构也被叫做 **节点（Node）**。一个 AST 可以由单一的节点或是成百上千个节点构成。它们组合在一起可以描述用于静态分析的程序语法。
 
-Every Node has this interface:
+每一个节点都有如下所示的接口（Interface）：
 
 ```typescript
 interface Node {
@@ -224,13 +218,9 @@ interface Node {
 }
 ```
 
-The `type` field is a string representing the type of Node the object is (ie.
-`"FunctionDeclaration"`, `"Identifier"`, or `"BinaryExpression"`). Each type of
-Node defines an additional set of properties that describe that particular node
-type.
+字符串形式的 `type` 字段表示节点的类型（如：`"FunctionDeclaration"`, `"Identifier"`, 或 `"BinaryExpression"`）。每一种类型的节点定义了一些附加属性用来进一步描述该节点类型。
 
-There are additional properties on every Node that Babel generates which
-describe the position of the Node in the original source code.
+Babel 还为每个节点额外生成了一些属性，用于描述该节点在原始代码中的位置。
 
 ```js
 {
@@ -251,7 +241,7 @@ describe the position of the Node in the original source code.
 }
 ```
 
-These properties `start`, `end`, `loc`, appear in every single Node.
+每一个节点都会有 `start`, `end`, `loc` 这几个属性。
 
 ## Babel 的处理步骤
 
